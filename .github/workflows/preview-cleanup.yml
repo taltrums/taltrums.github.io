@@ -1,0 +1,47 @@
+name: Preview cleanup
+
+# When a PR closes (merged or not), delete its preview directory so
+# gh-pages does not accumulate dead builds forever.
+on:
+  pull_request:
+    types: [closed]
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove preview directory
+        env:
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          if ! git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            echo "No gh-pages branch — nothing to clean."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch --depth=1 origin gh-pages:gh-pages
+          git checkout gh-pages
+
+          if [ ! -d "pr-$PR" ]; then
+            echo "pr-$PR was never deployed — nothing to clean."
+            exit 0
+          fi
+
+          git rm -rq "pr-$PR"
+          git commit -m "cleanup preview pr-$PR"
+          git push origin gh-pages
