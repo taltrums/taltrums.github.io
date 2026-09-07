@@ -1,0 +1,100 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+# Every deploy pushes to the same branch, so they must not overlap.
+# One global lane, no cancelling — a queued deploy still needs to land.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Fork PRs get a read-only token and cannot push the preview.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve target
+        id: t
+        env:
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          if [ -n "$PR" ]; then
+            echo "dir=pr-$PR"                                  >> "$GITHUB_OUTPUT"
+            echo "url=https://taltrums.github.io/pr-$PR/"      >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=."                                       >> "$GITHUB_OUTPUT"
+            echo "url=https://taltrums.github.io/"             >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to gh-pages
+        env:
+          DIR: ${{ steps.t.outputs.dir }}
+        run: |
+          set -euo pipefail
+
+          # Snapshot the site from the commit under test, before switching branches.
+          # git archive respects .gitignore-by-way-of-tracking: only committed files.
+          mkdir -p /tmp/site
+          git archive HEAD | tar -x -C /tmp/site
+          rm -rf /tmp/site/.github
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch --depth=1 origin gh-pages:gh-pages
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf --cached . >/dev/null 2>&1 || true
+            find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          fi
+
+          if [ "$DIR" = "." ]; then
+            # Production: replace the root wholesale so deleted files really disappear,
+            # but leave the pr-* preview dirs of open PRs standing.
+            find . -mindepth 1 -maxdepth 1 ! -name .git ! -name 'pr-*' -exec rm -rf {} +
+            cp -R /tmp/site/. .
+          else
+            rm -rf "./$DIR"
+            mkdir -p "./$DIR"
+            cp -R /tmp/site/. "./$DIR/"
+          fi
+
+          touch .nojekyll
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed — skipping push."
+            exit 0
+          fi
+          git commit -m "deploy $DIR from ${GITHUB_SHA:0:7}"
+          git push origin gh-pages
+
+      - name: Comment the preview link
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          URL: ${{ steps.t.outputs.url }}
+        run: |
+          # printf, not a multi-line shell string: YAML block indentation would
+          # otherwise prefix the body with spaces and markdown would render it as code.
+          BODY=$(printf '**Preview:** %s\n\nUpdated for `%s`. Pages can take ~30s to serve a fresh deploy.' \
+                   "$URL" "${GITHUB_SHA:0:7}")
+          # Edit the existing comment instead of stacking a new one on every push.
+          gh pr comment "$PR" --edit-last --body "$BODY" \
+            || gh pr comment "$PR" --body "$BODY"
