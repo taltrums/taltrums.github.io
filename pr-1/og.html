@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OG image generator — screenshot me at 1200x630</title>
+<!--
+  ════════════════════════════════════════════════════════════
+  THIS FILE IS A TOOL, NOT A PAGE. It never gets linked.
+
+  It exists to make img/og.jpg — the preview image that shows
+  up when your link is pasted in a DM, a Story, or a tweet.
+  Without it, shares render as a bare grey text card.
+
+  HOW TO EXPORT (Chrome, ~30 seconds):
+    1. Open this file in Chrome
+    2. Cmd+Opt+I  to open DevTools
+    3. Cmd+Shift+M  to toggle device toolbar
+    4. Set the size to exactly  1200 x 630
+    5. Cmd+Shift+P  ->  type "capture area screenshot" -> Enter
+       (or "capture screenshot" if the frame is already exact)
+    6. Save it as  img/og.jpg
+       If it saves as .png, convert:
+         ffmpeg -i og.png -q:v 3 img/og.jpg
+
+  Want your face on it instead of the mark? Uncomment the
+  .photo block below and point it at img/life.jpg.
+  ════════════════════════════════════════════════════════════
+-->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A0A0B; --bone: #F2F0ED; --mute: #8A8A90;
+    --faint: #4E4E55; --ember: #FF5A1F;
+    --display: 'Archivo', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; display: grid; place-items: center; min-height: 100vh; }
+
+  /* exactly the share-card aspect ratio */
+  .og {
+    position: relative; overflow: hidden;
+    width: 1200px; height: 630px;
+    background: var(--ink);
+    font-family: var(--display);
+    color: var(--bone);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 96px;
+  }
+
+  /* same atmosphere as the site */
+  .og::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(90% 120% at 100% 0%, rgba(255,90,31,.16) 0%, transparent 55%),
+      radial-gradient(100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,.6) 100%);
+  }
+  .og::after {
+    content: ''; position: absolute; inset: 0; opacity: .16; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .bar { position: absolute; top: 0; left: 0; right: 0; height: 5px;
+         background: linear-gradient(90deg, var(--ember), rgba(255,90,31,.2) 40%, transparent 72%); }
+
+  .inner { position: relative; z-index: 2; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: 19px; font-weight: 500;
+    letter-spacing: .26em; text-transform: uppercase; color: var(--mute);
+    margin-bottom: 30px;
+  }
+  .eyebrow i { color: var(--faint); font-style: normal; }
+
+  h1 { font-size: 132px; font-weight: 800; line-height: .84;
+       letter-spacing: -.045em; text-transform: uppercase; }
+  h1 em { display: block; font-style: normal; color: var(--faint); }
+
+  .line { font-size: 27px; color: var(--mute); margin-top: 34px; letter-spacing: -.01em; }
+  .line b { color: var(--bone); font-weight: 600; }
+
+  .foot {
+    position: absolute; z-index: 2; left: 96px; right: 96px; bottom: 54px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--mono); font-size: 19px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .foot .live { display: flex; align-items: center; gap: 12px; color: var(--mute); }
+  .foot .live::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--ember); }
+
+  /* Optional: your face on the right instead of the mark.
+     Uncomment, and change padding above to `0 96px` -> `0 520px 0 96px`
+  .photo {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 460px; z-index: 1;
+    background: url('img/life.jpg') center/cover;
+    filter: grayscale(1) contrast(1.05);
+    mask-image: linear-gradient(to right, transparent, #000 32%);
+  }
+  */
+
+  /* the big ghosted mark, bottom-right */
+  .mark {
+    position: absolute; z-index: 1; right: -60px; bottom: -120px;
+    font-size: 460px; font-weight: 800; line-height: 1;
+    color: var(--bone); opacity: .035; letter-spacing: -.06em;
+  }
+</style>
+</head>
+<body>
+  <div class="og">
+    <span class="bar"></span>
+    <span class="mark">T</span>
+
+    <!-- <div class="photo"></div> -->
+
+    <div class="inner">
+      <p class="eyebrow">Gaming <i>/</i> Fitness <i>/</i> Lifestyle <i>/</i> Memes</p>
+      <h1>Mohd<em>Talha</em></h1>
+      <p class="line"><b>cpucrusher</b> when I'm gaming. <b>taltrums4real</b> when I'm not.</p>
+    </div>
+
+    <div class="foot">
+      <span class="live">Every link, one place</span>
+      <span>taltrums.github.io</span>
+    </div>
+  </div>
+</body>
+</html>
