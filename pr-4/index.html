@@ -433,11 +433,12 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
 /* ════════════════════════════════════════════════════════════
    CONTACT — posts to FormSubmit. No backend, no build step.
 
-   ┌─ BEFORE THIS WORKS ────────────────────────────────────┐
-   │  The form action holds a placeholder token. Replace it  │
-   │  with the random string FormSubmit gives you, then      │
-   │  submit once to confirm the address. Search the file    │
-   │  for FORMSUBMIT_TOKEN.                                  │
+   ┌─ THE ENDPOINT ─────────────────────────────────────────┐
+   │  Activated. The action holds FormSubmit's random token, │
+   │  not the mail address, so scrapers get nothing from     │
+   │  the page source. The token maps to the inbox on their  │
+   │  side. To point it somewhere else you need a new token: │
+   │  the address it belongs to can't be read back from it.  │
    └─────────────────────────────────────────────────────────┘
    ════════════════════════════════════════════════════════════ */
 /* focused only via the #contact jump, never by tabbing, so the ring is noise */
@@ -800,10 +801,9 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
        Mail lands in Proton via FormSubmit. Nothing to host, nothing to
        maintain, and the address never appears in this file.
 
-       ▸ REPLACE THE TOKEN BELOW BEFORE THIS GOES LIVE.
-         formsubmit.co → enter your Proton address → it hands you a random
-         string. Paste it over FORMSUBMIT_TOKEN. Your first submission
-         triggers one confirmation email; click it and the form is on.
+       The action is FormSubmit's random token, deliberately — the address
+       never appears here. Activation is bound to taltrums.github.io, so it
+       works from this domain only; a new deploy elsewhere needs re-confirming.
 
        Works with JavaScript off: it's a plain POST form. The script below
        only upgrades it so the visitor never leaves the page — which matters
@@ -820,7 +820,7 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
     </div>
 
     <form id="contact-form"
-          action="https://formsubmit.co/mohdtalham@proton.me"
+          action="https://formsubmit.co/e28cae72328eea30e0f4c4ac5a0cddd7"
           method="POST">
 
       <!-- FormSubmit config. _next is rewritten by the script to the current
