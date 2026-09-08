@@ -1003,9 +1003,9 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
         sending = false;
       })
       .catch(function () {
-        // FormSubmit documents /ajax/ for a bare email but says nothing about
-        // using it with a hidden token. If it isn't supported, hand off to the
-        // ordinary POST so the message still arrives — worst case is a redirect.
+        // The /ajax/ path is verified working with the token, so this only runs
+        // on a network failure or an outage. Hand off to the ordinary POST so
+        // the message still arrives — worst case is a redirect away from here.
         // .prototype.submit avoids any field that happens to be named "submit".
         HTMLFormElement.prototype.submit.call(form);
       });

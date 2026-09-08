@@ -78,8 +78,9 @@ and swap the new token in.
 The form is a plain `POST`, so it works with JavaScript off — FormSubmit just
 redirects back to `?sent=1`. With JS on, it submits through
 `formsubmit.co/ajax/…` and never leaves the page, which matters because most
-visitors are inside an Instagram webview. If the AJAX call fails for any
-reason it falls back to the plain POST, so a message is never silently lost.
+visitors are inside an Instagram webview. That path is verified working with the
+token (their docs only document `/ajax/` for a bare address). If it ever fails
+it falls back to the plain POST, so a message is never silently lost.
 
 reCAPTCHA is on (FormSubmit's default). Tuning knobs are the `_subject`,
 `_template`, and `_next` hidden inputs; `_next` is rewritten by the script to
