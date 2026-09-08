@@ -18,6 +18,7 @@ Film grain and vignette are generated SVG, so the page ships without a single ba
 | Bio | `index.html` → `ABOUT` section |
 | Photos & video | drop into `img/` — see `img/README.txt` for filenames |
 | Share preview | `og.html` is the 1200x630 source for `img/og.jpg` |
+| Contact form | `index.html` → `CONTACT` section. Endpoint: the `action` on the `<form>` |
 
 Swap the pinned card weekly. Paste the **specific** post URL, not the profile URL.
 
@@ -51,6 +52,39 @@ its preview directory.
 Both live in `.github/workflows/`. They publish to the `gh-pages` branch with
 plain `git` and no third-party actions, so nothing outside GitHub holds write
 access to the site.
+
+## Contact form
+
+Mail goes to Proton via [FormSubmit](https://formsubmit.co). No backend, no
+account, nothing to keep running.
+
+**Already activated — no setup needed.** The `action` holds FormSubmit's
+random token rather than the address, so the inbox can't be scraped out of the
+page source. The token is a one-way pointer: it maps to the address on
+FormSubmit's side and the address can't be read back from it.
+
+Two things that will bite if you forget them:
+
+- Activation is bound to **`taltrums.github.io`**. Serving the page from any
+  other host means re-confirming there.
+- FormSubmit refuses submissions from `file://` pages — opening `index.html`
+  by double-clicking it will show *"Make sure you open this page through a web
+  server"*. Use `python3 -m http.server` to test locally.
+
+To send mail somewhere else you need a **new** token: submit once from a real
+`https` page on the domain with the plain address in the `action`, confirm it,
+and swap the new token in.
+
+The form is a plain `POST`, so it works with JavaScript off — FormSubmit just
+redirects back to `?sent=1`. With JS on, it submits through
+`formsubmit.co/ajax/…` and never leaves the page, which matters because most
+visitors are inside an Instagram webview. That path is verified working with the
+token (their docs only document `/ajax/` for a bare address). If it ever fails
+it falls back to the plain POST, so a message is never silently lost.
+
+reCAPTCHA is on (FormSubmit's default). Tuning knobs are the `_subject`,
+`_template`, and `_next` hidden inputs; `_next` is rewritten by the script to
+the current origin so a PR preview returns to the preview.
 
 ## Regenerating the share image
 
