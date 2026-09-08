@@ -130,6 +130,7 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
 
 .status {
   display: flex; align-items: center; gap: var(--s2);
+  flex-wrap: wrap;              /* if the hail link won't fit, it drops a line rather than overflowing */
   font-family: var(--mono); font-size: .75rem; letter-spacing: .04em;
   color: var(--faint); margin-top: var(--s4);
 }
@@ -142,6 +143,25 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
   70%  { box-shadow: 0 0 0 10px rgba(255,90,31,0); }
   100% { box-shadow: 0 0 0 0 rgba(255,90,31,0); }
 }
+
+/* Rides the far end of the status row instead of taking a line of its own.
+   This page is opened from a bio and mostly gets one screen of attention —
+   the contact section at the bottom is never reached — so the only affordance
+   that counts is one that fits above the fold. Sharing this row costs zero
+   height, which keeps the pinned card where .pare works to keep it. */
+.hail {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: .4em;
+  font-family: var(--mono); font-size: .6875rem; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; white-space: nowrap;
+  color: var(--mute); text-decoration: none;
+  border-bottom: 1px solid rgba(255,90,31,.3); padding-bottom: 1px;
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.hail:hover, .hail:focus-visible { color: var(--ember); border-color: var(--ember); outline: none; }
+.hail i { font-style: normal; transition: transform .25s var(--ease); }
+/* nudges down, not right — it jumps down the page rather than leaving it */
+.hail:hover i, .hail:focus-visible i { transform: translateY(2px); }
 
 /* ════════════════════════════════════════════════════════════
    SECTION HEADS
@@ -218,6 +238,8 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
   transition: opacity .35s var(--ease), transform .35s var(--ease), color .35s var(--ease);
 }
 .card:hover .arrow, .card:focus-visible .arrow { opacity: 1; transform: none; color: var(--brand); }
+/* in-page jump: rises into place instead of sliding in from the left */
+.arrow.down { transform: translateY(-3px); }
 
 .blurb {
   font-size: .875rem; font-weight: 600; line-height: 1.5;
@@ -418,6 +440,8 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
    │  for FORMSUBMIT_TOKEN.                                  │
    └─────────────────────────────────────────────────────────┘
    ════════════════════════════════════════════════════════════ */
+/* focused only via the #contact jump, never by tabbing, so the ring is noise */
+.contact:focus { outline: none; }
 .contact form { display: grid; gap: var(--s3); }
 
 /* name + email share a row on desktop, stack on phones */
@@ -562,6 +586,7 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
   <symbol id="i-snapchat" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></symbol>
   <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
   <symbol id="i-code" viewBox="0 0 24 24"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4Zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></symbol>
 </svg>
 
 <div class="shell">
@@ -578,7 +603,8 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
       <s>Two accounts, one guy, zero filter.</s>
     </p>
 
-    <p class="status"><span class="dot" aria-hidden="true"></span> streaming · lifting<span class="pare"> · shipping</span></p>
+    <p class="status"><span class="dot" aria-hidden="true"></span> streaming · lifting<span class="pare"> · shipping</span>
+      <a class="hail" href="#contact">Get in touch <i aria-hidden="true">↓</i></a></p>
   </header>
 
   <!-- ══════════════════ PINNED ══════════════════
@@ -712,6 +738,15 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
         <span class="tags"><span>Code</span><span>Dotfiles</span></span>
         <span class="arrow" aria-hidden="true">↗</span>
       </a>
+      <!-- jumps to the form at the bottom. No rel="me": this one stays on the
+           page, and the arrow points down to say so. --brand defaults to ember. -->
+      <a class="card" href="#contact">
+        <svg class="logo" aria-hidden="true"><use href="#i-mail"/></svg>
+        <span class="plat">Email</span>
+        <span class="at">work / collab</span>
+        <span class="tags"><span>Replies</span><span>Usually</span></span>
+        <span class="arrow down" aria-hidden="true">↓</span>
+      </a>
     </div>
   </section>
 
@@ -774,7 +809,10 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
        only upgrades it so the visitor never leaves the page — which matters
        here, because most of them arrive inside an Instagram webview.
   -->
-  <section class="group rise contact" id="contact">
+  <!-- tabindex="-1": jumping here moves focus to the section, so a screen
+       reader announces it. Deliberately not focusing the first input — on a
+       phone that throws the keyboard up over the page unasked. -->
+  <section class="group rise contact" id="contact" tabindex="-1">
     <div class="head">
       <h2>Contact</h2>
       <span class="fill"></span>
