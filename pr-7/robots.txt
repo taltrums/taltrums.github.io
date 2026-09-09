@@ -1,9 +1,0 @@
-# Everything here is meant to be found.
-User-agent: *
-Allow: /
-
-# Preview builds of open pull requests. Real content, wrong URL — keeping them
-# out avoids duplicate-content copies of the homepage competing with the real one.
-Disallow: /pr-
-
-Sitemap: https://taltrums.github.io/sitemap.xml
