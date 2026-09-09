@@ -431,7 +431,9 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
   font-family: var(--mono); font-size: .5625rem; letter-spacing: .14em;
   text-transform: uppercase; color: var(--faint);
 }
-.reel.is-loaded .hint { display: none; }
+/* has-poster matters on phones: preload="none" means loadedmetadata never fires
+   until a tap, so is-loaded alone would leave this sitting over a real poster. */
+.reel.is-loaded .hint, .reel.has-poster .hint { display: none; }
 
 .reel-copy .k {
   font-family: var(--mono); font-size: .6875rem; font-weight: 500;
@@ -987,7 +989,22 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
   });
 
   // if the files aren't there yet, stay in placeholder state quietly
-  v.addEventListener('error', function () { reel.classList.remove('is-loaded'); }, true);
+  v.addEventListener('error', function () {
+    reel.classList.remove('is-loaded', 'has-poster');
+  }, true);
+
+  // Phones run this in manual mode with preload="none", so loadedmetadata does
+  // not fire until someone taps — is-loaded never lands and the "drop the file"
+  // hint ends up printed across a poster that is plainly not missing. Probe the
+  // poster instead. The browser is already fetching it to render it, so this is
+  // a cache hit and costs no extra bytes. If the video itself later 404s, the
+  // error handler above pulls the class back off and the hint returns.
+  var posterSrc = v.getAttribute('poster');
+  if (posterSrc) {
+    var probe = new Image();
+    probe.onload = function () { reel.classList.add('has-poster'); };
+    probe.src = posterSrc;
+  }
 
   if (manual) {
     reel.classList.add('manual');
