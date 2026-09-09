@@ -86,6 +86,32 @@ reCAPTCHA is on (FormSubmit's default). Tuning knobs are the `_subject`,
 `_template`, and `_next` hidden inputs; `_next` is rewritten by the script to
 the current origin so a PR preview returns to the preview.
 
+## SEO
+
+The useful work here isn't keywords, it's **entity resolution**. `index.html`
+carries a JSON-LD `Person` whose `sameAs` lists all eight profiles, so a search
+engine treats *Mohd Talha*, *taltrums4real*, *cpucrusher* and those accounts as
+one identity instead of unrelated strings.
+
+**If you add or remove a link, update `sameAs` in the JSON-LD to match.** The
+`rel="me"` attributes in the body and `sameAs` in the head say the same thing
+in two places, and they only help while they agree.
+
+| File | Purpose |
+|---|---|
+| `robots.txt` | Allows everything except `/pr-` previews, which would otherwise be duplicate copies of the homepage. Points to the sitemap. |
+| `sitemap.xml` | One URL. Mostly there so Search Console has something to fetch. |
+
+The three stills are real `<img>` tags with `alt`, `width`/`height` and
+`loading="lazy"` — a CSS `background-image` can't be indexed by image search or
+carry alt text. Keep the `alt` text descriptive when you swap photos.
+
+Not done, and deliberately: `<meta name="keywords">` is ignored by Google, and
+`taltrums.github.io` can't be changed without buying a domain.
+
+To verify after a change, paste the URL into Google's Rich Results Test and
+Search Console → URL Inspection.
+
 ## Regenerating the share image
 
 ```bash

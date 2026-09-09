@@ -4,18 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Mohd Talha — cpucrusher</title>
+<!-- "Mohd Talha" is a common name and hard to rank for. The handles are unique,
+     so they're the terms actually winnable — both belong in the title. -->
+<title>Mohd Talha — taltrums4real &amp; cpucrusher</title>
 <meta name="description" content="Mohd Talha. Gaming as cpucrusher, fitness and life as taltrums4real, integrations for a living. Every link in one place.">
 <meta name="theme-color" content="#0A0A0B">
 <meta name="color-scheme" content="dark">
 
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="cpucrusher">
-<meta property="og:title" content="Mohd Talha — cpucrusher">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Mohd Talha">
+<meta property="og:title" content="Mohd Talha — taltrums4real &amp; cpucrusher">
 <meta property="og:description" content="Gaming, fitness, lifestyle, memes. Integration engineer by day. Every link in one place.">
 <meta property="og:url" content="https://taltrums.github.io">
+<meta property="og:locale" content="en_US">
+<meta property="profile:username" content="taltrums4real">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mohd Talha — cpucrusher">
+<meta name="twitter:title" content="Mohd Talha — taltrums4real &amp; cpucrusher">
 <meta name="twitter:description" content="Gaming, fitness, lifestyle, memes. Integration engineer by day. Every link in one place.">
 
 <!-- Share preview. Generate img/og.jpg once by opening og.html and
@@ -23,8 +27,9 @@
 <meta property="og:image" content="https://taltrums.github.io/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Mohd Talha — cpucrusher">
+<meta property="og:image:alt" content="Mohd Talha — taltrums4real &amp; cpucrusher">
 <meta name="twitter:image" content="https://taltrums.github.io/img/og.jpg">
+<meta name="twitter:image:alt" content="Mohd Talha — taltrums4real &amp; cpucrusher">
 
 <!-- SVG favicon, inline: no file, no request, scales everywhere -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230A0A0B'/><path d='M7 9h18v4.4h-6.6V25h-4.8V13.4H7z' fill='%23FF5A1F'/></svg>">
@@ -34,6 +39,58 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Structured data. On a link-in-bio the job isn't keywords, it's entity
+     resolution: sameAs ties one Person to every account, so a search engine
+     treats "Mohd Talha", "taltrums4real", "cpucrusher" and the eight profiles
+     as one identity rather than unrelated strings. That's what makes this page
+     the hub Google returns for any of those terms.
+     Keep sameAs in sync with the rel="me" links in the body. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://taltrums.github.io/#person",
+      "name": "Mohd Talha",
+      "alternateName": ["taltrums4real", "cpucrusher"],
+      "url": "https://taltrums.github.io",
+      "image": "https://taltrums.github.io/img/og.jpg",
+      "jobTitle": "Integration Engineer",
+      "description": "Gaming as cpucrusher, fitness and life as taltrums4real, integrations for a living.",
+      "knowsAbout": ["API integrations", "Gaming", "Fitness"],
+      "sameAs": [
+        "https://www.instagram.com/taltrums4real",
+        "https://www.youtube.com/@taltrums4real",
+        "https://www.snapchat.com/add/taltrums4real",
+        "https://www.instagram.com/cpucrusher",
+        "https://www.youtube.com/@cpucrusher",
+        "https://www.twitch.tv/cpucrusher",
+        "https://github.com/taltrums",
+        "https://taltrums.fly.dev"
+      ]
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://taltrums.github.io/#page",
+      "url": "https://taltrums.github.io",
+      "name": "Mohd Talha — taltrums4real & cpucrusher",
+      "inLanguage": "en",
+      "mainEntity": { "@id": "https://taltrums.github.io/#person" },
+      "isPartOf": { "@id": "https://taltrums.github.io/#website" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://taltrums.github.io/#website",
+      "url": "https://taltrums.github.io",
+      "name": "Mohd Talha",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://taltrums.github.io/#person" }
+    }
+  ]
+}
+</script>
 
 <style>
 /* ════════════════════════════════════════════════════════════
@@ -398,7 +455,8 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
    │      img/setup.jpg      your desk / rig / battlestation │
    │      img/lift.jpg       gym / training                  │
    │      img/life.jpg       lifestyle / candid / you         │
-   │  That's it. No HTML to edit — the paths are wired below. │
+   │  Then update width/height/alt on the three <img> tags   │
+   │  in the STILLS section — alt is what image search reads.│
    │  Portrait crops, ~1200x1500. Until they exist you'll    │
    │  see the placeholder tiles (and a 404 in the console).  │
    └─────────────────────────────────────────────────────────┘
@@ -408,21 +466,25 @@ h1 em { display: block; font-style: normal; color: var(--faint); }
   position: relative; aspect-ratio: 4/5; overflow: hidden;
   border-radius: 10px;
   background-color: var(--card);
-  /* Layer 1 = your photo (paints over everything).
-     Layers 2-3 = the placeholder texture, only visible while no photo exists. */
+  /* Placeholder texture. The photo is a real <img> on top of this now, so this
+     is what shows through if a file is ever missing. */
   background-image:
-    var(--photo, none),
     linear-gradient(150deg, rgba(255,90,31,.08) 0%, transparent 55%),
     repeating-linear-gradient(45deg, rgba(242,240,237,.02) 0 1px, transparent 1px 7px);
-  background-size: cover, cover, auto;
-  background-position: center, center, center;
-  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: cover, auto;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
+  /* filter on the frame cascades to the img inside it, so the greyscale-at-rest
+     behaviour is unchanged from when this was a background-image. */
   filter: grayscale(1) contrast(1.04);
   transition: filter .5s var(--ease), transform .5s var(--ease);
 }
-.frame:nth-child(1) { --photo: url('img/setup.jpg'); }
-.frame:nth-child(2) { --photo: url('img/lift.jpg'); }
-.frame:nth-child(3) { --photo: url('img/life.jpg'); }
+/* fills the 4:5 box and crops rather than squashing — same as background cover.
+   ::after is the label and still paints above this, being the last child. */
+.frame img {
+  position: absolute; inset: 0; display: block;
+  width: 100%; height: 100%; object-fit: cover;
+}
 .frame::after {
   content: attr(data-label); position: absolute; left: var(--s2); bottom: var(--s2);
   font-family: var(--mono); font-size: .5625rem; letter-spacing: .18em;
@@ -788,9 +850,22 @@ footer a:hover, footer a:focus-visible { color: var(--ember); border-color: rgba
   <section class="group rise">
     <div class="head"><h2>Stills</h2><span class="fill"></span><span class="as">setup / lift / life</span></div>
     <div class="frames">
-      <div class="frame" data-label="Setup"></div>
-      <div class="frame" data-label="Lift"></div>
-      <div class="frame" data-label="Life"></div>
+      <!-- Real <img>, not CSS backgrounds: a background-image is invisible to
+           image search and can't carry alt text. width/height are the intrinsic
+           sizes so the box is reserved before the file lands (no layout shift),
+           and lazy/async keep them off the critical path. -->
+      <div class="frame" data-label="Setup">
+        <img src="img/setup.jpg" width="1036" height="1220" loading="lazy" decoding="async"
+             alt="Mohd Talha's desk setup and gaming rig">
+      </div>
+      <div class="frame" data-label="Lift">
+        <img src="img/lift.jpg" width="1120" height="1400" loading="lazy" decoding="async"
+             alt="Mohd Talha training in the gym">
+      </div>
+      <div class="frame" data-label="Life">
+        <img src="img/life.jpg" width="787" height="1400" loading="lazy" decoding="async"
+             alt="Mohd Talha, candid portrait">
+      </div>
     </div>
   </section>
 
